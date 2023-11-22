@@ -1,0 +1,88 @@
+<div class="container mt-4" *ngIf="carItem?.canDisplay">
+
+  <h2 class="text-center mb-4">Gestion des Voitures</h2>
+
+  <div class="d-flex justify-content-center">
+    <!-- Tableau des Voitures -->
+    <div *ngIf="voitures.length > 0">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Manufacturing Date</th>
+            <th>Registration Number</th>
+            <th>Seats Number</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let voiture of voitures">
+            <td>{{ voiture.make }}</td>
+            <td>{{ voiture.model }}</td>
+            <td>{{ voiture.manufacturingDate | date:'short' }}</td>
+            <td>{{ voiture.registrationNumber }}</td>
+            <td>{{ voiture.seatsNumber }}</td>
+            <td>    <p-button
+              id="add-*"
+              label="Voir sur la carte"
+              appSTPermission
+              [screenName]="'CarManagement'"
+              styleClass="p-button-danger"
+              (onClick)="navigateToMap()"
+            ></p-button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Boutons d'Action -->
+  <div class="d-flex justify-content-between align-items-center">
+    <p-button
+      id="add-*"
+      label="Ajouter une Voiture"
+      appSTPermission
+      [screenName]="'CarManagement'"
+      styleClass="p-button-success"
+      (onClick)="openPopup()"
+    ></p-button>
+    <p-button
+      id="add-*"
+      class="mx-2"
+      label="Modifier une Voiture"
+      appSTPermission
+      [screenName]="'CarManagement'"
+      styleClass="p-button-info"
+      
+    ></p-button>
+    <p-button
+      id="delete-*"
+      label="Supprimer une Voiture"
+      appSTPermission
+      [screenName]="'CarManagement'"
+      styleClass="p-button-danger"
+    ></p-button>
+
+  
+ 
+  </div>
+
+</div>
+
+<div class="container mt-4" *ngIf="!carItem?.canDisplay">
+<h1>Not allowed</h1>
+</div>
+
+<p-dialog
+
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="m-0">
+ <app-add-car></app-add-car>
+  </p>
+</p-dialog>

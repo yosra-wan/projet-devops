@@ -1,0 +1,14 @@
+<div class="container my-4">
+  <h3 class="text-center">Assign Car to Driver!</h3>
+  <form class="form" [formGroup]="historyForm" (ngSubmit)="submit()">
+    <div class="form-group first">
+      <label for="carId">Car</label>
+      <select class="form-control" id="carId" formControlName="carId">
+        <option *ngFor="let car of cars" [value]="car.id">
+          {{ car.make }} - {{ car.model }}
+        </option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Assign Car</button>
+  </form>
+</div>

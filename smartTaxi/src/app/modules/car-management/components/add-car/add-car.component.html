@@ -1,0 +1,40 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Ajouter une Voiture</h2>
+  
+    <div class="d-flex justify-content-center">
+      <!-- Formulaire d'Ajout de Voiture -->
+      <form (ngSubmit)="ajouterVoiture()" [formGroup]="carForm">
+        <div class="form-group">
+          <label for="make">Marque :</label>
+          <input type="text" id="make" name="make" class="form-control" formControlName="make" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="model">Modèle :</label>
+          <input type="text" id="model" name="model" class="form-control" formControlName="model" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="manufacturingDate">Date de Fabrication :</label>
+          <input type="date" id="manufacturingDate" name="manufacturingDate" class="form-control" formControlName="manufacturingDate" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="registrationNumber">Numéro d'Immatriculation :</label>
+          <input type="text" id="registrationNumber" name="registrationNumber" class="form-control" formControlName="registrationNumber" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="seatsNumber">Nombre de Places :</label>
+          <input type="number" id="seatsNumber" name="seatsNumber" class="form-control" formControlName="seatsNumber" required>
+        </div>
+  
+        <button type="submit" class="btn btn-success">Ajouter</button>
+      </form>
+    </div>
+  
+    <div *ngIf="ajoutSucces" class="alert alert-success mt-3">
+      La voiture a été ajoutée avec succès !
+    </div>
+  </div>
+  

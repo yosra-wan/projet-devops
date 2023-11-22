@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Gestion des Utilisateurs</h2>
+
+  <div>
+    <h3>Admins</h3>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Email</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Téléphone</th>
+          <th>Nom d'utilisateur</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.email }}</td>
+          <td>{{ admin.lastname }}</td>
+          <td>{{ admin.firstname }}</td>
+          <td>{{ admin.phone }}</td>
+          <td>{{ admin.username }}</td>
+          <td>
+            <button class="btn btn-primary mx-4" (click)="gererPermissions(admin)">Gérer les Permissions</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h3>Chauffeurs</h3>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Email</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Téléphone</th>
+          <th>Nom d'utilisateur</th>
+          <th>Prix par heure</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chauffeur of chauffeurs">
+          <td>{{ chauffeur.email }}</td>
+          <td>{{ chauffeur.lastname }}</td>
+          <td>{{ chauffeur.firstname }}</td>
+          <td>{{ chauffeur.phone }}</td>
+          <td>{{ chauffeur.username }}</td>
+          <td>{{ chauffeur.hourRate }}</td>
+          <td>
+            <button class="btn btn-primary mx-4" (click)="gererPermissions(chauffeur)">Gérer les Permissions</button>
+            <button class="btn btn-success mx-4" (click)="assignerChauffeur(chauffeur)">Assigner Voiture</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h3>Entreprises</h3>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Email</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Téléphone</th>
+          <th>Nom d'utilisateur</th>
+          <th>Matricule fiscale</th>
+          <th>Adresse</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entreprise of entreprises">
+          <td>{{ entreprise.email }}</td>
+          <td>{{ entreprise.lastname }}</td>
+          <td>{{ entreprise.firstname }}</td>
+          <td>{{ entreprise.phone }}</td>
+          <td>{{ entreprise.username }}</td>
+          <td>{{ entreprise.matriculeFiscale }}</td>
+          <td>{{ entreprise.address }}</td>
+          <td>
+            <button class="btn btn-primary mx-4" (click)="gererPermissions(entreprise)">Gérer les Permissions</button>
+            <button class="btn btn-success mx-4" (click)="assignerEntreprise(entreprise)">Assigner Voiture</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<p-dialog
+  
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="m-0">
+    <app-add-car-history [receivedDriverId]="userId"></app-add-car-history>
+  </p>
+</p-dialog>
