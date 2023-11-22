@@ -32,7 +32,7 @@ public class CarController {
 
     }
 
-    @GetMapping(value = "/all-cars")
+    @GetMapping(value =  "/all-cars")
     public ResponseEntity<Object> getAllCars(){
         try {
             carService.getAllCars();
