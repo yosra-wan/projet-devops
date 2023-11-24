@@ -5,8 +5,7 @@ pipeline {
         SSH_USER = 'ec2-user'
         EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
     }
-
-    tools {
+    tools{
         maven 'maven-3.6'
         nodejs 'nodeJs'
     }
@@ -97,4 +96,5 @@ pipeline {
             }
         }
     }
+
 }
