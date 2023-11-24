@@ -4,31 +4,35 @@ pipeline {
     environment {
         SSH_USER = 'ec2-user'
         EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64/bin/java' // Update with the actual path to JDK 17
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
     }
-    tools{
+
+    tools {
+        // Use the tool installation names defined in Jenkins
         maven 'maven-3.9.4'
         nodejs 'node-16.20.0'
     }
 
     stages {
-             stage('Set JDK 17') {
+        stage('Set JDK 17') {
             steps {
                 script {
                     // Set the JDK version for this stage
-                    env.JAVA_HOME = '/path/to/jdk17' // Update with the actual path to JDK 17
-                    sh '${JAVA_HOME}/bin/java -version'
+                    env.JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
+                    sh "${env.JAVA_HOME}/bin/java -version"
                 }
             }
         }
-          stage('Check Java Version') {
+
+        stage('Check Java Version') {
             steps {
                 script {
                     sh 'java -version'
                 }
             }
+        }
 
-                stage('Build carmanagement-service JAR') {
+        stage('Build carmanagement-service JAR') {
             steps {
                 script {
                     echo 'Building the carmanagement-service Spring Boot application'
@@ -63,14 +67,12 @@ pipeline {
             }
         }
 
-
-
         stage('Build and Push Docker Images') {
             steps {
                 script {
                     echo 'Building and pushing Docker images'
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh 'docker build -t yosra28/carmanagement-service:latest ./carmanagement-service/'
+                        sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
                         sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                         sh 'docker push yosra28/carmanagement-service:latest'
 
@@ -114,6 +116,4 @@ pipeline {
             }
         }
     }
-
-}
 }
