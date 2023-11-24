@@ -1,10 +1,12 @@
 pipeline {
     agent any
- environment {
+    
+    environment {
         SSH_USER = 'ec2-user'
         EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
     }
-    tools{
+
+    tools {
         maven 'maven-3.6'
         nodejs 'nodeJs'
     }
@@ -24,63 +26,75 @@ pipeline {
             }
         }
 
-        stage('build jar') {
+        stage('Build carmanagement-service JAR') {
             steps {
-                script{
-                    echo 'Building the Spring boot application'
-                    dir('SpringBoot') {
+                script {
+                    echo 'Building the carmanagement-service Spring Boot application'
+                    dir('car-management-service') {
                         sh 'mvn package'
                     }
                 }
             }
         }
 
-     stage('build image') {
+        stage('Build auth-service JAR') {
             steps {
-                script{
-                    echo 'building the docker image'
-                    withCredentials([usernamePassword(credentialsId:'docker-hub-repo', passwordVariable:'PASS',usernameVariable:'USER')]){
-                        sh 'docker build -t  yosra28/springboot ./SpringBoot/'
-                        sh "echo $PASS | docker login -u $USER --password-stdin "
-                        sh 'docker push yosra28/springboot'
-
-                        sh 'docker build -t  yosra28/angular ./Angular/'
-                        sh 'docker push yosra28/angular'
+                script {
+                    echo 'Building the auth-service Spring Boot application'
+                    dir('auth-service') {
+                        sh 'mvn package'
                     }
                 }
             }
         }
 
-        
-    stage('Connect to EC2') {
+        stage('Build and Push Docker Images') {
+            steps {
+                script {
+                    echo 'Building and pushing Docker images'
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh 'docker build -t yosra28/carmanagement-service:latest ./carmanagement-service/'
+                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker push yosra28/carmanagement-service:latest'
+
+                        sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
+                        sh 'docker push yosra28/auth-service:latest'
+                        
+                        sh 'docker build -t yosra28/angular-app:latest ./Angular/'
+                        sh 'docker push yosra28/angular-app:latest'
+                    }
+                }
+            }
+        }
+
+        stage('Connect to EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
                     sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${EC2_HOST}"
                 }
             }
         }
-        stage('Pull Docker image') {
+
+        stage('Pull Docker Images on EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker container rm -f springboot"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker container rm -f angular"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker rmi \$(docker images -a -q) >/dev/null 2>&1 || true"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull  yosra28/springboot:latest"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull  yosra28/angular:latest"
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
                 }
             }
-        }            
+        }
 
-
-        stage('Deploy') {
+        stage('Deploy Docker Containers on EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
                     sh "ssh ${SSH_USER}@${EC2_HOST} docker network create my-network >/dev/null 2>&1 || true"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name springboot  --network my-network --hostname springboot -d  -p 9977:9977   yosra28/springboot:latest"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular  --network my-network --hostname angular  -d -p 8080:8080   yosra28/angular:latest"
+                    
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name carmanagement-service --network my-network -d -p 8082:8082 yosra28/carmanagement-service:latest"
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name auth-service --network my-network -d -p 8081:8081 yosra28/auth-service:latest"
+                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network -d -p 4200:4200 yosra28/angular-app:latest"
                 }
             }
         }
     }
-
 }
