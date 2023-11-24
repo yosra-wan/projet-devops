@@ -32,27 +32,71 @@ pipeline {
             }
         }
 
-        stage('Build carmanagement-service JAR') {
+           stage('Test car-management-service') {
             steps {
                 script {
-                    echo 'Building the carmanagement-service Spring Boot application'
+                    echo 'Testing car-management-service'
                     dir('car-management-service') {
-                        sh 'mvn package'
+                        sh 'mvn test'
                     }
                 }
             }
         }
 
-        stage('Build auth-service JAR') {
+        stage('Test auth-service') {
             steps {
                 script {
-                    echo 'Building the auth-service Spring Boot application'
+                    echo 'Testing auth-service'
                     dir('auth-service') {
-                        sh 'mvn package'
+                        sh 'mvn test'
                     }
                 }
             }
         }
+
+        stage('Build car-management-service') {
+            steps {
+                script {
+                    echo 'Building car-management-service'
+                    dir('car-management-service') {
+                        sh 'mvn clean package spring-boot:repackage'
+                    }
+                }
+            }
+        }
+
+        stage('Build auth-service') {
+            steps {
+                script {
+                    echo 'Building auth-service'
+                    dir('auth-service') {
+                        sh 'mvn clean package spring-boot:repackage'
+                    }
+                }
+            }
+        }
+
+        // stage('Build carmanagement-service JAR') {
+        //     steps {
+        //         script {
+        //             echo 'Building the carmanagement-service Spring Boot application'
+        //             dir('car-management-service') {
+        //                 sh 'mvn package'
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage('Build auth-service JAR') {
+        //     steps {
+        //         script {
+        //             echo 'Building the auth-service Spring Boot application'
+        //             dir('auth-service') {
+        //                 sh 'mvn package'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Build Angular App') {
             steps {
