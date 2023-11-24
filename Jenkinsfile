@@ -12,20 +12,7 @@ pipeline {
 
     stages {
 
-        stage('Build Angular App') {
-            steps {
-                script {
-                    echo 'Building the Angular application'
-                    dir('Angular') {
-                        sh 'npm install'
-                        sh 'npm install -g @angular/cli'
-                        sh 'ng build'
-                    }
-                }
-            }
-        }
-
-        stage('Build carmanagement-service JAR') {
+                stage('Build carmanagement-service JAR') {
             steps {
                 script {
                     echo 'Building the carmanagement-service Spring Boot application'
@@ -46,6 +33,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Angular App') {
+            steps {
+                script {
+                    echo 'Building the Angular application'
+                    dir('Angular') {
+                        sh 'npm install'
+                        sh 'npm install -g @angular/cli'
+                        sh 'ng build'
+                    }
+                }
+            }
+        }
+
+
 
         stage('Build and Push Docker Images') {
             steps {
