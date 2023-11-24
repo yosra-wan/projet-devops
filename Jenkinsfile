@@ -5,7 +5,7 @@ pipeline {
         EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
     }
     tools{
-        maven 'maven-3.6'
+        maven 'maven-3.9.4'
         nodejs 'nodeJs'
     }
 
