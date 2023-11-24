@@ -11,6 +11,13 @@ pipeline {
     }
 
     stages {
+           stage('Check Java Version') {
+            steps {
+                script {
+                    sh 'java -version'
+                }
+            }
+        }
 
                 stage('Build carmanagement-service JAR') {
             steps {
