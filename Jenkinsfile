@@ -4,6 +4,7 @@ pipeline {
     environment {
         SSH_USER = 'ec2-user'
         EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64/bin/java' // Update with the actual path to JDK 17
     }
     tools{
         maven 'maven-3.9.4'
@@ -11,13 +12,21 @@ pipeline {
     }
 
     stages {
-           stage('Check Java Version') {
+             stage('Set JDK 17') {
+            steps {
+                script {
+                    // Set the JDK version for this stage
+                    env.JAVA_HOME = '/path/to/jdk17' // Update with the actual path to JDK 17
+                    sh '${JAVA_HOME}/bin/java -version'
+                }
+            }
+        }
+          stage('Check Java Version') {
             steps {
                 script {
                     sh 'java -version'
                 }
             }
-        }
 
                 stage('Build carmanagement-service JAR') {
             steps {
