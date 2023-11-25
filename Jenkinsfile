@@ -10,7 +10,7 @@ pipeline {
     tools {
         // Use the tool installation names defined in Jenkins
         maven 'maven-3.9.4'
-        nodejs 'node-16.20.0'
+        nodejs 'node-18.16.1'
     }
 
     stages {
