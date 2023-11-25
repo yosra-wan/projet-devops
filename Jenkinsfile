@@ -115,9 +115,9 @@ pipeline {
             steps {
                 script {
                     echo 'Building and pushing Docker images'
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
-                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker login -u yosra28 -p youyou2899'
                         sh 'docker push yosra28/carmanagement-service:latest'
 
                         sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
