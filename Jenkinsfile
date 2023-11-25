@@ -102,7 +102,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the Angular application'
-                    dir('Angular') {
+                    dir('smartTaxi') {
                         sh 'npm install'
                         sh 'npm install -g @angular/cli'
                         sh 'ng build'
