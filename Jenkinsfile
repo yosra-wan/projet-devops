@@ -116,15 +116,15 @@ pipeline {
                 script {
                     echo 'Building and pushing Docker images'
                     withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
-                        sh 'docker login -u yosra28 -p youyou2899'
-                        sh 'docker push yosra28/carmanagement-service:latest'
+                        sh 'sudo docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
+                        sh 'sudo docker login -u yosra28 -p youyou2899'
+                        sh 'sudo docker push yosra28/carmanagement-service:latest'
 
-                        sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
-                        sh 'docker push yosra28/auth-service:latest'
+                        sh 'sudo docker build -t yosra28/auth-service:latest ./auth-service/'
+                        sh 'sudo docker push yosra28/auth-service:latest'
                         
-                        sh 'docker build -t yosra28/angular-app:latest ./Angular/'
-                        sh 'docker push yosra28/angular-app:latest'
+                        sh 'sudo docker build -t yosra28/angular-app:latest ./Angular/'
+                        sh 'sudo docker push yosra28/angular-app:latest'
                     }
                 }
             }
