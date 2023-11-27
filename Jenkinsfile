@@ -117,7 +117,7 @@ pipeline {
                     echo 'Building and pushing Docker images'
                     withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                         sh 'sudo docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
-                        sh 'sudo docker login -u yosra28 -p youyou2899'
+                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                         sh 'sudo docker push yosra28/carmanagement-service:latest'
 
                         sh 'sudo docker build -t yosra28/auth-service:latest ./auth-service/'
