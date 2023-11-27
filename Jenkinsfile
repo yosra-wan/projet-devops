@@ -24,13 +24,6 @@ pipeline {
             }
         }
 
-        stage('Check Java Version') {
-            steps {
-                script {
-                    sh 'java -version'
-                }
-            }
-        }
 
            stage('Test car-management-service') {
             steps {
@@ -111,24 +104,25 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Images') {
-            steps {
-                script {
-                    echo 'Building and pushing Docker images'
-                    withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh 'sudo docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
-                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-                        sh 'sudo docker push yosra28/carmanagement-service:latest'
+  stage('Build and Push Docker Images') {
+    steps {
+        script {
+            echo 'Building and pushing Docker images'
+            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
+                sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                sh 'docker push yosra28/carmanagement-service:latest'
 
-                        sh 'sudo docker build -t yosra28/auth-service:latest ./auth-service/'
-                        sh 'sudo docker push yosra28/auth-service:latest'
-                        
-                        sh 'sudo docker build -t yosra28/angular-app:latest ./Angular/'
-                        sh 'sudo docker push yosra28/angular-app:latest'
-                    }
-                }
+                sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
+                sh 'docker push yosra28/auth-service:latest'
+                
+                sh 'docker build -t yosra28/angular-app:latest ./Angular/'
+                sh 'docker push yosra28/angular-app:latest'
             }
         }
+    }
+}
+
 
         stage('Connect to EC2') {
             steps {
