@@ -61,18 +61,18 @@ pipeline {
             }
         }
         
-        // stage('Build Angular App') {
-        //     steps {
-        //         script {
-        //             echo 'Building the Angular application'
-        //             dir('smartTaxi') {
-        //                 sh 'npm install'
-        //                 sh 'npm install -g @angular/cli'
-        //                 sh 'ng build'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Angular App') {
+            steps {
+                script {
+                    echo 'Building the Angular application'
+                    dir('smartTaxi') {
+                        sh 'npm install'
+                        sh 'npm install -g @angular/cli'
+                        sh 'ng build'
+                    }
+                }
+            }
+        }
 
   stage('Build and Push Docker Images') {
     steps {
@@ -86,8 +86,8 @@ pipeline {
                 sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
                 sh 'docker push yosra28/auth-service:latest'
                 
-                // sh 'docker build -t yosra28/angular-app:latest ./smartTaxi/'
-                // sh 'docker push yosra28/angular-app:latest'
+                sh 'docker build -t yosra28/angular-app:latest ./smartTaxi/'
+                sh 'docker push yosra28/angular-app:latest'
             }
         }
     }
@@ -107,7 +107,7 @@ pipeline {
                 sshagent(['ec2-server-key']) {
                     sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
                     sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
-                    // sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
+                     sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
                 }
             }
         }
@@ -119,7 +119,7 @@ pipeline {
                     
                     sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name carmanagement-service --network my-network -d -p 8082:8082 yosra28/carmanagement-service:latest"
                     sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name auth-service --network my-network -d -p 8081:8081 yosra28/auth-service:latest"
-                    // sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network -d -p 4200:4200 yosra28/angular-app:latest"
+                     sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network -d -p 4200:4200 yosra28/angular-app:latest"
                 }
             }
         }
