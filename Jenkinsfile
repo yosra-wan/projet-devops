@@ -86,7 +86,7 @@ pipeline {
                 sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
                 sh 'docker push yosra28/auth-service:latest'
                 
-                sh 'docker build -t yosra28/angular-app:latest ./Angular/'
+                sh 'docker build -t yosra28/angular-app:latest ./smarTaxi/'
                 sh 'docker push yosra28/angular-app:latest'
             }
         }
