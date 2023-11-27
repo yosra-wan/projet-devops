@@ -68,29 +68,7 @@ pipeline {
                 }
             }
         }
-
-       
-        //     steps {
-        //         script {
-        //             echo 'Building the carmanagement-service Spring Boot application'
-        //             dir('car-management-service') {
-        //                 sh 'mvn package'
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage('Build auth-service JAR') {
-        //     steps {
-        //         script {
-        //             echo 'Building the auth-service Spring Boot application'
-        //             dir('auth-service') {
-        //                 sh 'mvn package'
-        //             }
-        //         }
-        //     }
-        // }
-
+        
         stage('Build Angular App') {
             steps {
                 script {
