@@ -147,6 +147,15 @@ pipeline {
                 }
             }
         }
+
+            post {
+            always {
+                // Send an email to multiple recipients
+                emailext subject: 'Build Notification',
+                         body: 'The build has completed.',
+                         to: 'yosrawanene28@gamil.com'
+            }
+         }
     }
     
 }
