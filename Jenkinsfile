@@ -61,18 +61,18 @@ pipeline {
             }
         }
         
-        // stage('Build Angular App') {
-        //     steps {
-        //         script {
-        //             echo 'Building the Angular application'
-        //             dir('smartTaxi') {
-        //                 sh 'npm install'
-        //                 sh 'npm install -g @angular/cli'
-        //                 sh 'ng build'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Angular App') {
+            steps {
+                script {
+                    echo 'Building the Angular application'
+                    dir('smartTaxi') {
+                        sh 'npm install'
+                        sh 'npm install -g @angular/cli'
+                        sh 'ng build'
+                    }
+                }
+            }
+        }
 
   stage('Build and Push Docker Images') {
     steps {
@@ -86,8 +86,8 @@ pipeline {
                 sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
                 sh 'docker push yosra28/auth-service:latest'
                 
-                // sh 'docker build -t yosra28/angular-app:latest ./Angular/'
-                // sh 'docker push yosra28/angular-app:latest'
+                sh 'docker build -t yosra28/angular-app:latest ./Angular/'
+                sh 'docker push yosra28/angular-app:latest'
             }
         }
     }
