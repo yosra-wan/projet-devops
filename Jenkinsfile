@@ -69,7 +69,7 @@ pipeline {
             }
         }
 
-        // stage('Build carmanagement-service JAR') {
+       
         //     steps {
         //         script {
         //             echo 'Building the carmanagement-service Spring Boot application'
