@@ -102,12 +102,32 @@ pipeline {
             }
         }
 
+        stage('Stop and Remove Existing Containers on EC2') {
+            steps {
+                sshagent(['ec2-server-key']) {
+                    script {
+                        // Stop and remove existing containers
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker stop carmanagement-service || true"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker rm carmanagement-service || true"
+
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker stop auth-service || true"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker rm auth-service || true"
+
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker stop angular-app || true"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker rm angular-app || true"
+                    }
+                }
+            }
+        }
+
         stage('Pull Docker Images on EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
-                     sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
+                    script {
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
+                    }
                 }
             }
         }
@@ -115,13 +135,18 @@ pipeline {
         stage('Deploy Docker Containers on EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker network create my-network >/dev/null 2>&1 || true"
-                    
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name carmanagement-service --network my-network -d -p 8082:8082 yosra28/carmanagement-service:latest"
-                    sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name auth-service --network my-network -d -p 8081:8081 yosra28/auth-service:latest"
-                     sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network -d -p 4200:4200 yosra28/angular-app:latest"
+                    script {
+                        // Create Docker network if it doesn't exist
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker network create my-network >/dev/null 2>&1 || true"
+
+                        // Deploy new containers
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name carmanagement-service --network my-network -d -p 8082:8082 yosra28/carmanagement-service:latest"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name auth-service --network my-network -d -p 8081:8081 yosra28/auth-service:latest"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network -d -p 4200:4200 yosra28/angular-app:latest"
+                    }
                 }
             }
         }
     }
+    
 }
