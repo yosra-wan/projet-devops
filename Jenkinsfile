@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        SSH_USER = 'ec2-user'
-        EC2_HOST = 'ec2-34-197-48-200.compute-1.amazonaws.com'
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
+        SSH_USER = 'ubuntu'
+        EC2_HOST = 'ec2-3-86-76-45.compute-1.amazonaws.com'
+        // JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
     }
 
     tools {
