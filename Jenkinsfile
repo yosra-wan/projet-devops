@@ -74,24 +74,24 @@ pipeline {
             }
         }
 
-  stage('Build and Push Docker Images') {
-    steps {
-        script {
-            echo 'Building and pushing Docker images'
-            withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
-                sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-                sh 'docker push yosra28/carmanagement-service:latest'
+        stage('Build and Push Docker Images') {
+            steps {
+                script {
+                    echo 'Building and pushing Docker images'
+                    withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
+                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker push yosra28/carmanagement-service:latest'
 
-                sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
-                sh 'docker push yosra28/auth-service:latest'
-                
-                sh 'docker build -t yosra28/angular-app:latest ./smartTaxi/'
-                sh 'docker push yosra28/angular-app:latest'
+                        sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
+                        sh 'docker push yosra28/auth-service:latest'
+                        
+                        sh 'docker build -t yosra28/angular-app:latest ./smartTaxi/'
+                        sh 'docker push yosra28/angular-app:latest'
+                    }
+                }
             }
         }
-    }
-}
 
 
         stage('Connect to EC2') {
@@ -102,11 +102,12 @@ pipeline {
             }
         }
 
-        stage('Stop and Remove Existing Containers on EC2') {
+
+        stage('Pull Docker Images on EC2') {
             steps {
                 sshagent(['ec2-server-key']) {
                     script {
-                        // Stop and remove existing containers
+                         // Stop and remove existing containers
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker stop carmanagement-service || true"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker rm carmanagement-service || true"
 
@@ -115,15 +116,6 @@ pipeline {
 
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker stop angular-app || true"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker rm angular-app || true"
-                    }
-                }
-            }
-        }
-
-        stage('Pull Docker Images on EC2') {
-            steps {
-                sshagent(['ec2-server-key']) {
-                    script {
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
@@ -148,14 +140,15 @@ pipeline {
             }
         }
 
-            post {
-            always {
-                // Send an email to multiple recipients
-                emailext subject: 'Build Notification',
-                         body: 'The build has completed.',
-                         to: 'yosrawanene28@gamil.com'
-            }
-         }
+     post {
+    always {
+        // Send an email to multiple recipients
+        emailext subject: 'Build Notification',
+                 body: 'The build has completed.',
+                 to: 'yosrawanene28@gmail.com' // Corrected email address
+    }
+}
     }
     
 }
+
