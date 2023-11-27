@@ -14,15 +14,7 @@ pipeline {
     }
 
     stages {
-        stage('Set JDK 17') {
-            steps {
-                script {
-                    // Set the JDK version for this stage
-                    env.JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
-                    sh "${env.JAVA_HOME}/bin/java -version"
-                }
-            }
-        }
+   
 
 
            stage('Test car-management-service') {
@@ -69,18 +61,18 @@ pipeline {
             }
         }
         
-        stage('Build Angular App') {
-            steps {
-                script {
-                    echo 'Building the Angular application'
-                    dir('smartTaxi') {
-                        sh 'npm install'
-                        sh 'npm install -g @angular/cli'
-                        sh 'ng build'
-                    }
-                }
-            }
-        }
+        // stage('Build Angular App') {
+        //     steps {
+        //         script {
+        //             echo 'Building the Angular application'
+        //             dir('smartTaxi') {
+        //                 sh 'npm install'
+        //                 sh 'npm install -g @angular/cli'
+        //                 sh 'ng build'
+        //             }
+        //         }
+        //     }
+        // }
 
   stage('Build and Push Docker Images') {
     steps {
@@ -94,8 +86,8 @@ pipeline {
                 sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
                 sh 'docker push yosra28/auth-service:latest'
                 
-                sh 'docker build -t yosra28/angular-app:latest ./Angular/'
-                sh 'docker push yosra28/angular-app:latest'
+                // sh 'docker build -t yosra28/angular-app:latest ./Angular/'
+                // sh 'docker push yosra28/angular-app:latest'
             }
         }
     }
