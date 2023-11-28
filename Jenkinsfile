@@ -117,6 +117,7 @@ pipeline {
 
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker stop angular-app || true"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker rm angular-app || true"
+                        
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/carmanagement-service:latest"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/auth-service:latest"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker pull yosra28/angular-app:latest"
