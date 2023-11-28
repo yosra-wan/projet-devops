@@ -135,7 +135,7 @@ pipeline {
                         // Deploy new containers
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name carmanagement-service --network my-network -d -p 8082:8082 yosra28/carmanagement-service:latest"
                         sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name auth-service --network my-network -d -p 8081:8081 yosra28/auth-service:latest"
-                        sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network --restart always -d -p 4200:4200 yosra28/angular-app:latest"
+                        sh "ssh ${SSH_USER}@${EC2_HOST} docker run --name angular-app --network my-network  -d -p 4200:4200 yosra28/angular-app:latest"
                         
                     }
                 }
