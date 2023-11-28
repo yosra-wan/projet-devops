@@ -3,7 +3,8 @@ pipeline {
     
     environment {
         SSH_USER = 'ubuntu'
-        EC2_HOST = 'ec2-3-86-76-45.compute-1.amazonaws.com'
+        EC2_HOST = 'ec2-54-166-240-39.compute-1.amazonaws.com'
+        
         // JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
     }
 
