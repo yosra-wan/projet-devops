@@ -13,7 +13,3 @@ EXPOSE 8082
 # Set the entrypoint and command to run the Spring Boot application
 CMD ["java", "-jar", "CarManagement-0.0.1-SNAPSHOT.jar"]
 
-# Add labels for better maintainability
-LABEL maintainer="Your Name <yosrawanene28@gmail.com>"
-LABEL version="1.0"
-LABEL description="Docker image for Spring Boot Java 17 application"
