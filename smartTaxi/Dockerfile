@@ -1,18 +1,32 @@
-FROM node:18
+FROM node:18.16.1-alpine AS build
 
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package*.json ./
 RUN npm install
-RUN npm install -g @angular/cli
 
 COPY . .
 
-RUN ng build
-
-RUN npm prune --production
+RUN npm run build
 
 EXPOSE 4200
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["npm", "start"]
+# FROM node:18
+
+# WORKDIR /app
+# ENV PATH /app/node_modules/.bin:$PATH
+
+# COPY package*.json ./
+# RUN npm install
+# RUN npm install -g @angular/cli
+
+# COPY . .
+
+# RUN ng build
+
+# RUN npm prune --production
+
+# EXPOSE 4200
+
+# CMD ["ng", "serve", "--host", "0.0.0.0"]
