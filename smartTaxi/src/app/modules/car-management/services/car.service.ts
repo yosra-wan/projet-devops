@@ -6,21 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CarService {
+  private ip = '54.159.141.110';
   constructor(private http: HttpClient) {}
 
   getAllCar(): Observable<any> {
-    return this.http.get('http://localhost:8082/api/car/all-cars');
+    return this.http.get( `http://${this.ip}:8082/api/car/all-cars`);
   }
   ajouterVoiture(nouvelleVoiture: any): Observable<any> {
     
-    return this.http.post('http://localhost:8082/api/car/add', nouvelleVoiture);
+    return this.http.post( `http://${this.ip}:8082/api/car/add`, nouvelleVoiture);
   }
   assignCarToDriver(credentials: {
     id: any;
     currentUserId: any;
   }): Observable<any> {
     return this.http.post(
-      'http://localhost:8082/api/car/history/create',
+      `http://${this.ip}:8082/api/car/history/create`,
       credentials
     );
   }
