@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CarService {
-  private ip = '54.159.141.110';
+  private ip = '18.205.106.216';
   constructor(private http: HttpClient) {}
 
   getAllCar(): Observable<any> {
