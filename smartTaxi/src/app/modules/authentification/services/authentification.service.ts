@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthentificationService {
   constructor(private http: HttpClient) {}
-  private ip = '18.205.106.216';
+  private ip = '34.200.127.95';
   login(credentials: { login: string; password: string }): Observable<any> {
     return this.http.post(
       `http://${this.ip}:8081/api/auth/v1/login`,

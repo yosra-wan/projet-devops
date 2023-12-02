@@ -32,7 +32,7 @@ public class CarHistoryServImpl implements ICarHistoryServImpl {
 
         // FIXME : error message
         DriverDTO driverResponse = restTemplate.getForEntity(
-                "http://localhost:8081/api/driver/driver-by-id?id=" + carDTO.getCurrentUserId(),
+                "http://34.200.127.95:8081/api/driver/driver-by-id?id=" + carDTO.getCurrentUserId(),
                 DriverDTO.class
         ).getBody();
         System.out.println("driver"+driverResponse);
