@@ -33,15 +33,7 @@ public class AuthenticationApplication implements CommandLineRunner {
 		return "Hello from the Authentication Application!";
 	}
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurerAdapter() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/**").allowedOrigins("http://localhost:4200");
-//			}
-//		};
-//	}
+
 
 	@Override
 	public void run(String... args) throws Exception {
