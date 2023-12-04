@@ -5,7 +5,7 @@ pipeline {
         SSH_USER = 'ubuntu'
         EC2_HOST = 'ec2-34-200-127-95.compute-1.amazonaws.com'
         
-        // JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Update with the actual path to JDK 17
+       
     }
 
     tools {
@@ -15,8 +15,6 @@ pipeline {
     }
 
     stages {
-   
-
 
            stage('Test car-management-service') {
             steps {
@@ -80,8 +78,8 @@ pipeline {
                 script {
                     echo 'Building and pushing Docker images'
                     withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
                         sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker build -t yosra28/carmanagement-service:latest ./car-management-service/'
                         sh 'docker push yosra28/carmanagement-service:latest'
 
                         sh 'docker build -t yosra28/auth-service:latest ./auth-service/'
