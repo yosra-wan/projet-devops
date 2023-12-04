@@ -4,8 +4,6 @@ pipeline {
     environment {
         SSH_USER = 'ubuntu'
         EC2_HOST = 'ec2-34-200-127-95.compute-1.amazonaws.com'
-        
-       
     }
 
     tools {
@@ -66,7 +64,7 @@ pipeline {
                     echo 'Building the Angular application'
                     dir('smartTaxi') {
                         sh 'npm install'
-                        sh 'npm install -g @angular/cli'
+                        // sh 'npm install -g @angular/cli'
                         sh 'ng build'
                     }
                 }
